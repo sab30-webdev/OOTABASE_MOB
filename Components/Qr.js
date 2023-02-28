@@ -27,7 +27,7 @@ const Qr = ({ navigation }) => {
       onSnapshot(doc(db, `users/${user}`), async (doc) => {
         let { tno, booked } = doc.data();
         if (booked) {
-          setData(tno + user);
+          setData(tno + "_" + user);
         } else {
           setData("");
         }
@@ -38,7 +38,10 @@ const Qr = ({ navigation }) => {
   return (
     <View style={styles.container}>
       {data !== "" ? (
-        <QRCode size={200} value={data} />
+        <View>
+          <Text style={styles.scanText}>Scan Me </Text>
+          <QRCode size={200} value={data} />
+        </View>
       ) : (
         <Text>You haven't booked any table!</Text>
       )}
@@ -53,6 +56,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  scanText: {
+    fontSize: 52,
+    marginBottom: 20,
+    textAlign: "center",
   },
 });
 

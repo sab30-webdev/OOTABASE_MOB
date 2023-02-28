@@ -11,15 +11,6 @@ import {
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
-// const firebaseConfig = {
-//   apiKey: "AIzaSyB0RmV88aG2iHvGFHn04rifyZ92ZlrgN1I",
-//   authDomain: "ootabase.firebaseapp.com",
-//   projectId: "ootabase",
-//   storageBucket: "ootabase.appspot.com",
-//   messagingSenderId: "1027804451662",
-//   appId: "1:1027804451662:web:75e472e7c4d39d6955041f",
-// };
 const firebaseConfig = {
   apiKey: REACT_APP_API_KEY,
   authDomain: REACT_APP_AUTH_DOMAIN,

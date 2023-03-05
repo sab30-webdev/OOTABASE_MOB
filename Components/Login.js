@@ -5,6 +5,8 @@ import {
   TextInput,
   ImageBackground,
   TouchableOpacity,
+  ActivityIndicator,
+  Button,
 } from "react-native";
 import { Zeyada_400Regular, useFonts } from "@expo-google-fonts/zeyada";
 // import GradientText from "../Modules/Gradient";
@@ -59,14 +61,11 @@ const Login = ({ navigation }) => {
         addUser(user.uid);
       })
       .catch((error) => {
-        console.log(error);
         const errorCode = error.code;
         if (errorCode === "auth/email-already-in-use") {
-          console.log("Email already in use");
+          alert("Email already in use");
         } else if (errorCode === "auth/weak-password") {
-          console.log(
-            "Weak Password. Password should be at least 6 characters"
-          );
+          alert("Weak Password. Password should be at least 6 characters");
         }
       });
   };
@@ -79,21 +78,21 @@ const Login = ({ navigation }) => {
       .catch((error) => {
         const errorCode = error.code;
         if (errorCode === "auth/wrong-password") {
-          console.log("Wrong Password.Try again");
+          alert("Wrong Password.Try again");
         } else if (errorCode === "auth/user-not-found") {
-          console.log("User not found.Please register first");
+          alert("User not found.Please register first");
         }
       });
   };
 
   if (!fontsLoaded) {
-    return <Text>Loading...</Text>;
+    return <ActivityIndicator size='large' />;
   } else {
     return (
       <View style={styles.container}>
         <ImageBackground
           style={styles.img}
-          source={require("../assets/img1.jpg")}
+          source={require("../assets/back.jpg")}
         >
           {/* <GradientText colors={["#5DA7DB", "white"]} style={styles.text}>
             OOTABASE
@@ -134,6 +133,19 @@ const Login = ({ navigation }) => {
               >
                 Signup
               </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{ marginTop: 40 }}>
+            <Text style={styles.employeeText}>
+              Are you a employee? Click below to login
+            </Text>
+            <TouchableOpacity
+              style={[styles.button]}
+              onPress={() => {
+                navigation.navigate("StaffLogin");
+              }}
+            >
+              <Text style={styles.staffButton}>Staff Login</Text>
             </TouchableOpacity>
           </View>
         </ImageBackground>
@@ -179,6 +191,15 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 20,
     margin: 10,
+  },
+  employeeText: {
+    textAlign: "center",
+    fontSize: 15,
+    color: "white",
+  },
+  staffButton: {
+    color: "white",
+    fontSize: 13,
   },
 });
 

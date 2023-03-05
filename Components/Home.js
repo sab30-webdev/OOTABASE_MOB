@@ -3,20 +3,23 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
 import Footer from "./Footer";
 import Cards from "./Cards";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import {
-  getFirestore,
-  doc,
-  updateDoc,
-  setDoc,
-  addDoc,
-} from "firebase/firestore";
+import { getFirestore, doc, updateDoc, setDoc } from "firebase/firestore";
 
 const Home = ({ navigation }) => {
   const auth = getAuth();
   const db = getFirestore();
   const [user, setUser] = useState("");
   const [Tno, setTno] = useState(0);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user.uid);
+      } else {
+        navigation.navigate("Login");
+      }
+    });
+  }, [user]);
 
   const bookTable = async () => {
     //Close Modal
@@ -28,6 +31,9 @@ const Home = ({ navigation }) => {
         booked: true,
         tno: Tno,
       });
+      await updateDoc(doc(db, "tables/JV5rJ9L66JFo7KSQdagD"), {
+        [Tno]: "C",
+      });
     } catch (error) {
       console.log(error);
     }
@@ -35,40 +41,44 @@ const Home = ({ navigation }) => {
     navigation.navigate("Qr");
   };
 
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser(user.uid);
-        console.log(user);
-      } else {
-        navigation.navigate("Login");
-      }
-    });
-  }, [user]);
+  const booked = () => {
+    setTno(-1);
+  };
 
   return (
     <View style={styles.container}>
       {Tno !== 0 ? (
         <View style={styles.top}>
-          <Text style={styles.title}>
-            Would you like to book table no {Tno}?
-          </Text>
+          {Tno === -1 ? (
+            <Text style={styles.title}>
+              Table booked already!. Please choose a different table
+            </Text>
+          ) : (
+            <Text style={styles.title}>
+              Would you like to book table no {Tno}?
+            </Text>
+          )}
 
-          <View style={styles.booleanView}>
-            <TouchableOpacity style={styles.bool} onPress={bookTable}>
-              <Text>Yes</Text>
-            </TouchableOpacity>
+          {Tno !== -1 && (
+            <View style={styles.booleanView}>
+              <TouchableOpacity style={styles.bool} onPress={bookTable}>
+                <Text style={{ color: "white" }}>Yes</Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity style={styles.bool} onPress={() => setTno(0)}>
-              <Text>No</Text>
-            </TouchableOpacity>
-          </View>
+              <TouchableOpacity
+                style={[styles.bool, styles.noText]}
+                onPress={() => setTno(0)}
+              >
+                <Text>No</Text>
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
       ) : (
         <Text style={styles.title}>Choose your table {user}</Text>
       )}
 
-      <Cards setTno={setTno} />
+      <Cards setTno={setTno} booked={booked} />
       <Footer navigation={navigation} />
     </View>
   );
@@ -81,7 +91,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     textAlign: "center",
-    marginTop: 20,
+    marginTop: 40,
     marginBottom: 20,
     fontWeight: "bold",
   },
@@ -90,7 +100,7 @@ const styles = StyleSheet.create({
   },
   bool: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: "#142850",
     paddingBottom: 10,
     paddingTop: 10,
     justifyContent: "center",
@@ -99,6 +109,9 @@ const styles = StyleSheet.create({
   },
   top: {
     backgroundColor: "white",
+  },
+  noText: {
+    backgroundColor: "#619ed3",
   },
 });
 

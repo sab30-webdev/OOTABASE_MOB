@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet, Button } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Scanner = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -15,12 +16,30 @@ const Scanner = ({ navigation }) => {
     getBarCodeScannerPermissions();
   }, []);
 
+  const storeData = async (tno, uid) => {
+    try {
+      const jsonValue = JSON.stringify(tno + "_" + uid);
+      await AsyncStorage.setItem(`${tno}`, jsonValue);
+      navigation.navigate("Bookings");
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const extract = (qr) => {
+    const str = qr;
+    const arr = str.split("_");
+    const data = {
+      tno: arr[0],
+      uid: arr[1],
+    };
+    storeData(data.tno, data.uid);
+  };
+
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
     // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-    navigation.navigate("QrData", {
-      qr: data,
-    });
+    extract(data);
   };
 
   if (hasPermission === null) {
@@ -36,9 +55,9 @@ const Scanner = ({ navigation }) => {
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={StyleSheet.absoluteFillObject}
       />
-      {scanned && (
+      {/* {scanned && (
         <Button title={"Tap to Scan Again"} onPress={() => setScanned(false)} />
-      )}
+      )} */}
     </View>
   );
 };

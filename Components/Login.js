@@ -6,10 +6,8 @@ import {
   ImageBackground,
   TouchableOpacity,
   ActivityIndicator,
-  Button,
 } from "react-native";
 import { Zeyada_400Regular, useFonts } from "@expo-google-fonts/zeyada";
-// import GradientText from "../Modules/Gradient";
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -81,6 +79,8 @@ const Login = ({ navigation }) => {
           alert("Wrong Password.Try again");
         } else if (errorCode === "auth/user-not-found") {
           alert("User not found.Please register first");
+        } else if (errorCode === "auth/invalid-email") {
+          alert("Invalid Email");
         }
       });
   };
@@ -92,11 +92,8 @@ const Login = ({ navigation }) => {
       <View style={styles.container}>
         <ImageBackground
           style={styles.img}
-          source={require("../assets/back.jpg")}
+          source={require("../assets/img6.jpg")}
         >
-          {/* <GradientText colors={["#5DA7DB", "white"]} style={styles.text}>
-            OOTABASE
-          </GradientText> */}
           <Text style={styles.text}>OOTABASE</Text>
           <TextInput
             style={styles.input}
@@ -127,8 +124,8 @@ const Login = ({ navigation }) => {
                   ...styles.button,
                   backgroundColor: "white",
                   color: "black",
-                  borderColor: "#5DA7DB",
-                  borderWidth: 3,
+                  borderColor: "black",
+                  borderWidth: 2,
                 }}
               >
                 Signup
@@ -182,15 +179,16 @@ const styles = StyleSheet.create({
   button: {
     alignItems: "center",
     padding: 10,
-    color: "black",
     alignSelf: "center",
     width: 100,
     textAlign: "center",
-    backgroundColor: "#5DA7DB",
+    backgroundColor: "black",
     borderRadius: 10,
     color: "white",
     fontSize: 20,
     margin: 10,
+    borderColor: "white",
+    borderWidth: 2,
   },
   employeeText: {
     textAlign: "center",

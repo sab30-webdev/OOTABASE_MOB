@@ -1,15 +1,31 @@
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ActivityIndicator,
+  ImageBackground,
+} from "react-native";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
 import Footer from "./Footer";
 import Cards from "./Cards";
 import { getFirestore, doc, updateDoc, setDoc } from "firebase/firestore";
+import NetInfo from "@react-native-community/netinfo";
 
 const Home = ({ navigation }) => {
   const auth = getAuth();
   const db = getFirestore();
   const [user, setUser] = useState("");
   const [Tno, setTno] = useState(0);
+  const [isOnline, setIsOnline] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener((state) => {
+      setIsOnline(state.isConnected);
+    });
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -47,39 +63,56 @@ const Home = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {Tno !== 0 ? (
-        <View style={styles.top}>
-          {Tno === -1 ? (
-            <Text style={styles.title}>
-              Table booked already!. Please choose a different table
-            </Text>
-          ) : (
-            <Text style={styles.title}>
-              Would you like to book table no {Tno}?
-            </Text>
-          )}
+      {isOnline ? (
+        <View style={styles.container}>
+          {Tno !== 0 ? (
+            <View style={styles.top}>
+              {Tno === -1 ? (
+                <Text style={styles.title}>
+                  Table booked already!. Please choose a different table
+                </Text>
+              ) : (
+                <Text style={styles.title}>
+                  Would you like to book table no {Tno}?
+                </Text>
+              )}
 
-          {Tno !== -1 && (
-            <View style={styles.booleanView}>
-              <TouchableOpacity style={styles.bool} onPress={bookTable}>
-                <Text style={{ color: "white" }}>Yes</Text>
-              </TouchableOpacity>
+              {Tno !== -1 && (
+                <View style={styles.booleanView}>
+                  <TouchableOpacity style={styles.bool} onPress={bookTable}>
+                    <Text style={{ color: "white" }}>Yes</Text>
+                  </TouchableOpacity>
 
-              <TouchableOpacity
-                style={[styles.bool, styles.noText]}
-                onPress={() => setTno(0)}
-              >
-                <Text>No</Text>
-              </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[styles.bool, styles.noText]}
+                    onPress={() => setTno(0)}
+                  >
+                    <Text>No</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
             </View>
+          ) : (
+            <Text style={styles.title}>Choose your table {user}</Text>
           )}
+
+          <Cards setTno={setTno} booked={booked} />
+          <Footer navigation={navigation} />
         </View>
       ) : (
-        <Text style={styles.title}>Choose your table {user}</Text>
+        <View style={styles.container}>
+          <ImageBackground
+            style={styles.img}
+            source={require("../assets/img2.jpg")}
+          >
+            <Text style={styles.offlineText}>You are offline!</Text>
+            <Text style={styles.offlineText}>
+              Check your internet connection
+            </Text>
+            <ActivityIndicator size='large' />
+          </ImageBackground>
+        </View>
       )}
-
-      <Cards setTno={setTno} booked={booked} />
-      <Footer navigation={navigation} />
     </View>
   );
 };
@@ -112,6 +145,16 @@ const styles = StyleSheet.create({
   },
   noText: {
     backgroundColor: "#619ed3",
+  },
+  offlineText: {
+    textAlign: "center",
+    color: "black",
+    fontSize: 25,
+    marginBottom: 20,
+  },
+  img: {
+    flex: 1,
+    justifyContent: "center",
   },
 });
 

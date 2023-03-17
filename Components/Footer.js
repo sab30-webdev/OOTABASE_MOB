@@ -2,6 +2,7 @@ import { View, TouchableOpacity, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import { getAuth, signOut } from "firebase/auth";
 import Icon1 from "react-native-vector-icons/AntDesign";
+import Icon3 from "react-native-vector-icons/MaterialCommunityIcons";
 
 const Footer = ({ navigation }) => {
   const auth = getAuth();
@@ -34,16 +35,16 @@ const Footer = ({ navigation }) => {
       >
         <Icon1 name='qrcode' size={40} style={{ textAlign: "center" }} />
       </TouchableOpacity>
-      {/* <TouchableOpacity
+      <TouchableOpacity
         style={styles.icon}
         onPress={() => {
-          navigation.navigate("Scanner");
+          navigation.navigate("Menu");
         }}
       >
-        <Icon2 name='line-scan' size={40} style={{ textAlign: "center" }} />
-      </TouchableOpacity> */}
+        <Icon3 name='food-turkey' size={42} style={{ textAlign: "center" }} />
+      </TouchableOpacity>
       <TouchableOpacity style={styles.icon} onPress={logout}>
-        <Icon name='log-out' size={40} style={{ textAlign: "center" }} />
+        <Icon1 name='logout' size={35} style={{ textAlign: "center" }} />
       </TouchableOpacity>
     </View>
   );

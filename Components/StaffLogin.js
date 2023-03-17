@@ -8,9 +8,8 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { Zeyada_400Regular, useFonts } from "@expo-google-fonts/zeyada";
-// import GradientText from "../Modules/Gradient";
 import { getAuth } from "firebase/auth";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 
 const StaffLogin = ({ navigation }) => {
@@ -34,7 +33,6 @@ const StaffLogin = ({ navigation }) => {
           alert("Wrong password");
         }
       } else {
-        // doc.data() will be undefined in this case
         alert("User doesn't exist");
       }
     } catch (error) {
@@ -49,11 +47,8 @@ const StaffLogin = ({ navigation }) => {
       <View style={styles.container}>
         <ImageBackground
           style={styles.img}
-          source={require("../assets/back.jpg")}
+          source={require("../assets/img6.jpg")}
         >
-          {/* <GradientText colors={["#5DA7DB", "white"]} style={styles.text}>
-              OOTABASE
-            </GradientText> */}
           <Text style={styles.text}>OOTABASE Staff</Text>
           <TextInput
             style={styles.input}
@@ -112,15 +107,16 @@ const styles = StyleSheet.create({
   button: {
     alignItems: "center",
     padding: 10,
-    color: "black",
     alignSelf: "center",
     width: 100,
     textAlign: "center",
-    backgroundColor: "#5DA7DB",
+    backgroundColor: "black",
     borderRadius: 10,
     color: "white",
     fontSize: 20,
     margin: 10,
+    borderColor: "white",
+    borderWidth: 1,
   },
 });
 

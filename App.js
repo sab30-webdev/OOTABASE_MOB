@@ -10,12 +10,14 @@ import Scanner from "./Components/Scanner";
 import StaffLogin from "./Components/StaffLogin";
 import StaffHome from "./Components/StaffHome";
 import Bookings from "./Components/Bookings";
+import Menu from "./Components/Menu";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   initApp();
   LogBox.ignoreLogs(["AsyncStorage has been extracted from react-native core"]);
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName='Login'>
@@ -52,6 +54,11 @@ export default function App() {
         <Stack.Screen
           name='Bookings'
           component={Bookings}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name='Menu'
+          component={Menu}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

@@ -12,21 +12,6 @@ const StaffFooter = ({ navigation }) => {
       >
         <Icon name='line-scan' size={40} style={{ textAlign: "center" }} />
       </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.icon}
-        onPress={() => {
-          navigation.navigate("Scanner");
-        }}
-      >
-        <Icon
-          name='database-arrow-down-outline'
-          size={40}
-          style={{ textAlign: "center" }}
-          onPress={() => {
-            navigation.navigate("Bookings");
-          }}
-        />
-      </TouchableOpacity>
     </View>
   );
 };

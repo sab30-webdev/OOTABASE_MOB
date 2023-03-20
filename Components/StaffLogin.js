@@ -8,7 +8,6 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { Zeyada_400Regular, useFonts } from "@expo-google-fonts/zeyada";
-import { getAuth } from "firebase/auth";
 import { useState } from "react";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 
@@ -18,7 +17,6 @@ const StaffLogin = ({ navigation }) => {
   let [fontsLoaded] = useFonts({
     Zeyada_400Regular,
   });
-  const auth = getAuth();
   const db = getFirestore();
 
   const login = async () => {

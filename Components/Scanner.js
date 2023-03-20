@@ -1,16 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet, Button } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import {
-  doc,
-  setDoc,
-  getDoc,
-  getFirestore,
-  updateDoc,
-  addDoc,
-  deleteDoc,
-} from "firebase/firestore";
+import { doc, setDoc, getFirestore } from "firebase/firestore";
 
 const Scanner = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -25,16 +16,6 @@ const Scanner = ({ navigation }) => {
 
     getBarCodeScannerPermissions();
   }, []);
-
-  const storeData = async (tno, uid) => {
-    try {
-      const jsonValue = JSON.stringify(tno + "_" + uid);
-      await AsyncStorage.setItem(`${tno}`, jsonValue);
-      navigation.navigate("Bookings");
-    } catch (e) {
-      console.log(e);
-    }
-  };
 
   const revokeAccess = async (uid, tno) => {
     try {

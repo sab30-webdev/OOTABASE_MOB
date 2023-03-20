@@ -38,10 +38,7 @@ const Home = ({ navigation }) => {
   }, [user]);
 
   const bookTable = async () => {
-    //Close Modal
     setTno(0);
-
-    //Store in firebase
     try {
       await setDoc(doc(db, `users/${user}`), {
         booked: true,

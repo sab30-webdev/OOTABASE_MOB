@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   },
   offlineText: {
     textAlign: "center",
-    color: "black",
+    color: "white",
     fontSize: 25,
     marginBottom: 20,
   },

@@ -5,6 +5,8 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   ImageBackground,
+  BackHandler,
+  Alert,
 } from "react-native";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
@@ -19,6 +21,27 @@ const Home = ({ navigation }) => {
   const [user, setUser] = useState("");
   const [Tno, setTno] = useState(0);
   const [isOnline, setIsOnline] = useState(true);
+
+  useEffect(() => {
+    const backAction = () => {
+      Alert.alert("Hold on!", "Are you sure you want to quit?", [
+        {
+          text: "Cancel",
+          onPress: () => null,
+          style: "cancel",
+        },
+        { text: "YES", onPress: () => BackHandler.exitApp() },
+      ]);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
 
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener((state) => {
@@ -145,7 +168,7 @@ const styles = StyleSheet.create({
   },
   offlineText: {
     textAlign: "center",
-    color: "black",
+    color: "white",
     fontSize: 25,
     marginBottom: 20,
   },

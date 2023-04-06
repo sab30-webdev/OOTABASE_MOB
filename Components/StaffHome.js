@@ -5,7 +5,7 @@ const StaffHome = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Button
-        title='Qr Scanner'
+        title='open Qr Scanner'
         onPress={() => {
           navigation.navigate("Scanner");
         }}

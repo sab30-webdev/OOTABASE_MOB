@@ -12,16 +12,9 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  onAuthStateChanged,
 } from "firebase/auth";
-import { useState, useEffect } from "react";
-import {
-  getFirestore,
-  doc,
-  updateDoc,
-  setDoc,
-  addDoc,
-} from "firebase/firestore";
+import { useState } from "react";
+import { getFirestore, doc, setDoc } from "firebase/firestore";
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -31,16 +24,6 @@ const Login = ({ navigation }) => {
   });
   const auth = getAuth();
   const db = getFirestore();
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        navigation.navigate("Home");
-      } else {
-        navigation.navigate("Login");
-      }
-    });
-  }, [auth]);
 
   const addUser = async (uid) => {
     try {
@@ -72,6 +55,7 @@ const Login = ({ navigation }) => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
+        navigation.navigate("Home");
       })
       .catch((error) => {
         const errorCode = error.code;

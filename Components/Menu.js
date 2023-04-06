@@ -24,7 +24,6 @@ const Menu = ({ navigation }) => {
       <View style={styles.searchArea}>
         <TextInput
           placeholder='Search Menu'
-          autoFocus={true}
           style={styles.input}
           onChangeText={(text) => setSearchTerm(text.toLowerCase())}
         />

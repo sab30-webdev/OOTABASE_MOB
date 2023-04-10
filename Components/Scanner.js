@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet, Button } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
-import { doc, setDoc, getFirestore } from "firebase/firestore";
+import { doc, setDoc, getFirestore, getDoc } from "firebase/firestore";
 
 const Scanner = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -17,18 +17,35 @@ const Scanner = ({ navigation }) => {
     getBarCodeScannerPermissions();
   }, []);
 
-  const revokeAccess = async (uid, tno) => {
+  async function checkPermissions(uid) {
     try {
-      await setDoc(doc(db, `users/${uid}`), {
-        booked: false,
-        tno: "",
-      });
-
-      navigation.navigate("Bookings", {
-        tno: tno,
-      });
+      const access = await getDoc(doc(db, `users/${uid}`));
+      return access.data().booked;
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  const revokeAccess = async (uid, tno) => {
+    const access = await checkPermissions(uid, tno);
+
+    if (!access) {
+      navigation.navigate("Bookings", {
+        tno: -1,
+      });
+    } else {
+      try {
+        await setDoc(doc(db, `users/${uid}`), {
+          booked: false,
+          tno: "",
+        });
+
+        navigation.navigate("Bookings", {
+          tno: tno,
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -43,7 +60,6 @@ const Scanner = ({ navigation }) => {
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
-    // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
     extract(data);
   };
 
@@ -60,9 +76,6 @@ const Scanner = ({ navigation }) => {
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={StyleSheet.absoluteFillObject}
       />
-      {/* {scanned && (
-        <Button title={"Tap to Scan Again"} onPress={() => setScanned(false)} />
-      )} */}
     </View>
   );
 };

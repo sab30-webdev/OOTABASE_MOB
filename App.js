@@ -36,21 +36,10 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         {!user ? (
-          <Stack.Screen
-            name='Login'
-            component={Login}
-            options={{ headerShown: false }}
-          />
-        ) : (
           <>
             <Stack.Screen
-              name='Home'
-              component={Home}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name='Qr'
-              component={Qr}
+              name='Login'
+              component={Login}
               options={{ headerShown: false }}
             />
             <Stack.Screen
@@ -71,6 +60,19 @@ export default function App() {
             <Stack.Screen
               name='Bookings'
               component={Bookings}
+              options={{ headerShown: false }}
+            />
+          </>
+        ) : (
+          <>
+            <Stack.Screen
+              name='Home'
+              component={Home}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name='Qr'
+              component={Qr}
               options={{ headerShown: false }}
             />
             <Stack.Screen

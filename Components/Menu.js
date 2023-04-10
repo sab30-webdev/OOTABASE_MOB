@@ -26,7 +26,7 @@ const Menu = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Menu</Text>
+      <Text style={styles.title}>Our Menu</Text>
       <Animated.View
         entering={BounceInRight.duration(2000)}
         style={styles.searchArea}

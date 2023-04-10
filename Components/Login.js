@@ -47,6 +47,8 @@ const Login = ({ navigation }) => {
           alert("Email already in use");
         } else if (errorCode === "auth/weak-password") {
           alert("Weak Password. Password should be at least 6 characters");
+        } else if (errorCode === "auth/invalid-email") {
+          alert("Invalid Email");
         }
       });
   };

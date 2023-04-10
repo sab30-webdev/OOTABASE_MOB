@@ -10,9 +10,6 @@ import { useState, useEffect } from "react";
 import { doc, getFirestore, onSnapshot } from "firebase/firestore";
 
 const Cards = ({ setTno, booked }) => {
-  const [state, setState] = useState([
-    1, 2, 3, 4, 5, 6, 7, 9, 9, 9, 1, 2, 3, 4, 5, 6,
-  ]);
   const [tables, setTables] = useState({});
   const [tableData, setTableData] = useState({});
 

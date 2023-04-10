@@ -14,6 +14,13 @@ import Footer from "./Footer";
 import Cards from "./Cards";
 import { getFirestore, doc, updateDoc, setDoc } from "firebase/firestore";
 import NetInfo from "@react-native-community/netinfo";
+import Animated, {
+  BounceInRight,
+  BounceInUp,
+  BounceInLeft,
+  FlipOutXUp,
+  SequencedTransition,
+} from "react-native-reanimated";
 
 const Home = ({ navigation }) => {
   const auth = getAuth();
@@ -86,37 +93,48 @@ const Home = ({ navigation }) => {
       {isOnline ? (
         <View style={styles.container}>
           {Tno !== 0 ? (
-            <View style={styles.top}>
+            <Animated.View exiting={FlipOutXUp.duration(500)}>
               {Tno === -1 ? (
-                <Text style={styles.title}>
-                  Table booked already!. Please choose a different table
-                </Text>
+                <Animated.View entering={BounceInUp}>
+                  <Text style={[styles.title, { marginBottom: 5 }]}>
+                    Table booked already!
+                  </Text>
+                  <Text style={[styles.title, { marginTop: 5 }]}>
+                    Please choose a different table
+                  </Text>
+                </Animated.View>
               ) : (
-                <Text style={styles.title}>
-                  Would you like to book table no {Tno}?
-                </Text>
+                <Animated.View entering={BounceInLeft}>
+                  <Text style={[styles.title]}>
+                    Would you like to book table no {Tno}?
+                  </Text>
+                </Animated.View>
               )}
 
               {Tno !== -1 && (
-                <View style={styles.booleanView}>
-                  <TouchableOpacity style={styles.bool} onPress={bookTable}>
-                    <Text style={{ color: "white" }}>Yes</Text>
-                  </TouchableOpacity>
+                <Animated.View entering={BounceInRight.delay(500)}>
+                  <View style={styles.booleanView}>
+                    <TouchableOpacity style={styles.bool} onPress={bookTable}>
+                      <Text style={{ color: "white" }}>Yes</Text>
+                    </TouchableOpacity>
 
-                  <TouchableOpacity
-                    style={[styles.bool, styles.noText]}
-                    onPress={() => setTno(0)}
-                  >
-                    <Text>No</Text>
-                  </TouchableOpacity>
-                </View>
+                    <TouchableOpacity
+                      style={[styles.bool, styles.noText]}
+                      onPress={() => setTno(0)}
+                    >
+                      <Text>No</Text>
+                    </TouchableOpacity>
+                  </View>
+                </Animated.View>
               )}
-            </View>
+            </Animated.View>
           ) : (
-            <Text style={styles.title}>Choose your table {user}</Text>
+            <Text style={styles.title}>Choose your table </Text>
           )}
 
-          <Cards setTno={setTno} booked={booked} />
+          <Animated.View layout={SequencedTransition}>
+            <Cards setTno={setTno} booked={booked} />
+          </Animated.View>
           <Footer navigation={navigation} />
         </View>
       ) : (

@@ -2,6 +2,12 @@ import { useEffect, useState } from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
 import { getFirestore, onSnapshot, collection } from "firebase/firestore";
 import Footer from "./Footer";
+import Animated, {
+  BounceInLeft,
+  BounceInRight,
+  SlideInLeft,
+  SlideInRight,
+} from "react-native-reanimated";
 
 const Menu = ({ navigation }) => {
   const db = getFirestore();
@@ -21,13 +27,16 @@ const Menu = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Menu</Text>
-      <View style={styles.searchArea}>
+      <Animated.View
+        entering={BounceInRight.duration(2000)}
+        style={styles.searchArea}
+      >
         <TextInput
           placeholder='Search Menu'
           style={styles.input}
           onChangeText={(text) => setSearchTerm(text.toLowerCase())}
         />
-      </View>
+      </Animated.View>
       <View style={styles.items}>
         <View style={[styles.item, styles.itemTitle]}>
           <Text style={styles.heading}>Dish</Text>
@@ -39,14 +48,14 @@ const Menu = ({ navigation }) => {
       {menu
         .filter((val) => val[0].toLowerCase().includes(searchTerm))
         .map((item, idx) => (
-          <View key={idx} style={styles.items}>
+          <Animated.View entering={SlideInLeft} key={idx} style={styles.items}>
             <View style={[styles.item, styles.itemContent]}>
               <Text style={{ fontSize: 15, color: "white" }}>{item[0]}</Text>
             </View>
             <View style={[styles.item, styles.itemContent]}>
               <Text style={{ fontSize: 15, color: "white" }}>₹ {item[1]}</Text>
             </View>
-          </View>
+          </Animated.View>
         ))}
       <Footer navigation={navigation} />
     </View>

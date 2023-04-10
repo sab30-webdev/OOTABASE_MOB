@@ -11,6 +11,7 @@ import Footer from "./Footer";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { doc, onSnapshot, getFirestore } from "firebase/firestore";
 import NetInfo from "@react-native-community/netinfo";
+import Animated, { BounceInUp, StretchInX } from "react-native-reanimated";
 
 const Qr = ({ navigation }) => {
   const [data, setData] = useState("");
@@ -55,8 +56,12 @@ const Qr = ({ navigation }) => {
         <View style={styles.container1}>
           {data !== "" ? (
             <View style={styles.scanner}>
-              <Text style={styles.scanText}>Scan Me </Text>
-              <QRCode size={200} value={data} />
+              <Animated.View entering={BounceInUp.stiffness(20)}>
+                <Text style={styles.scanText}>Scan Me </Text>
+              </Animated.View>
+              <Animated.View entering={StretchInX}>
+                <QRCode size={200} value={data} />
+              </Animated.View>
             </View>
           ) : (
             <Text style={{ fontSize: 20 }}>You haven't booked any table!</Text>

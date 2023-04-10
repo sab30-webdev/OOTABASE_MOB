@@ -1,4 +1,4 @@
-import { View, TouchableOpacity, StyleSheet } from "react-native";
+import { View, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import { getAuth, signOut } from "firebase/auth";
 import Icon1 from "react-native-vector-icons/AntDesign";
@@ -6,6 +6,21 @@ import Icon3 from "react-native-vector-icons/MaterialCommunityIcons";
 
 const Footer = ({ navigation }) => {
   const auth = getAuth();
+
+  const createTwoButtonAlert = () =>
+    Alert.alert("Wait!", "Sure you want to logout?", [
+      {
+        text: "Cancel",
+        onPress: () => {},
+        style: "cancel",
+      },
+      {
+        text: "OK",
+        onPress: () => {
+          logout();
+        },
+      },
+    ]);
 
   const logout = () => {
     signOut(auth)
@@ -43,7 +58,7 @@ const Footer = ({ navigation }) => {
       >
         <Icon3 name='food-turkey' size={42} style={{ textAlign: "center" }} />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.icon} onPress={logout}>
+      <TouchableOpacity style={styles.icon} onPress={createTwoButtonAlert}>
         <Icon1 name='logout' size={35} style={{ textAlign: "center" }} />
       </TouchableOpacity>
     </View>
